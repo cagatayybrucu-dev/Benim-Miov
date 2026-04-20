@@ -482,7 +482,7 @@ export default function BenimMiovWebPreview() {
       <div style={styles.container}>
         <div style={styles.headerRow}>
           <div style={styles.logoWrap}><div style={styles.logoIcon}>🐾</div><div><div style={styles.logoText}>Benim Miov</div><div style={styles.headerSubtitle}>Minik dostlarının yaşam asistanı</div></div></div>
-          <div style={styles.developerCard}><div style={styles.developerBadge}>Geliştirici</div><div style={styles.developerName}>Çağatay Burucu</div><div style={styles.developerMeta}>Benim Miov • Product Builder</div></div>
+          <div style={styles.developerCard}><div style={styles.developerBadge}>Geliştirici</div><div style={styles.developerName}>Çağatay</div><div style={styles.developerMeta}>Benim Miov • Product Builder</div></div>
         </div>
 
         <div style={styles.topNav}>
