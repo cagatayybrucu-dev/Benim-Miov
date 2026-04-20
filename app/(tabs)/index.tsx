@@ -82,8 +82,10 @@ const INITIAL_ADOPTIONS = [
   { id: 2, name: "Tarçın", age: "2 yaş", breed: "Scottish Fold", city: "Ankara", note: "Sessiz yapılı, düzenli veteriner kontrolleri yapıldı.", image: "https://cdn2.thecatapi.com/images/3btzAjRh1.jpg", owner: "Mert K." },
 ];
 
-
-
+const INITIAL_CATS = [
+  { id: 1, name: "Hera", age: "2 yaş", breed: "Scottish Fold", breedId: "sfol", nextVaccine: "24 Nisan 2026", foodLevel: 68, vitaminStatus: "Bugün verildi", healthNote: "Enerjisi iyi, iştahı normal.", image: "https://cdn2.thecatapi.com/images/3btzAjRh1.jpg", weight: "4.2 kg", gender: "Dişi", lastVetVisit: "12 Nisan 2026", notes: [{ id: 1, text: "Bugün su tüketimi iyiydi.", createdAt: "20 Nisan 2026" }, { id: 2, text: "Sabah oyun süresi uzundu, enerjisi yüksekti.", createdAt: "19 Nisan 2026" }], vaccines: [{ id: 1, name: "Karma Aşı", date: "24 Nisan 2026", status: "Yaklaşıyor", nextDate: "24 Nisan 2027", intervalLabel: "Yılda bir" }, { id: 2, name: "İç Parazit", date: "10 Mart 2026", status: "Tamamlandı", nextDate: "09 Mayıs 2026", intervalLabel: "60 gün sonra" }], routines: [{ id: 1, label: "Sabah Maması", value: "Tamamlandı" }, { id: 2, label: "Vitamin", value: "Verildi" }] },
+  { id: 2, name: "Misket", age: "8 aylık", breed: "Aegean", breedId: "aege", nextVaccine: "30 Nisan 2026", foodLevel: 42, vitaminStatus: "Yarın verilecek", healthNote: "Su tüketimi takip edilmeli.", image: "https://cdn2.thecatapi.com/images/ozEvzdVM-.jpg", weight: "3.1 kg", gender: "Erkek", lastVetVisit: "05 Nisan 2026", notes: [{ id: 1, text: "Akşam mamasını yarım bıraktı.", createdAt: "20 Nisan 2026" }], vaccines: [{ id: 1, name: "Gençlik Aşısı", date: "30 Nisan 2026", status: "Yaklaşıyor", nextDate: "30 Nisan 2027", intervalLabel: "Yılda bir" }], routines: [{ id: 1, label: "Akşam Maması", value: "Bekliyor" }, { id: 2, label: "Omega Desteği", value: "Yarın" }] },
+];
 
 const BREED_IMAGE_MAP = {
   abys: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
@@ -480,7 +482,7 @@ export default function BenimMiovWebPreview() {
       <div style={styles.container}>
         <div style={styles.headerRow}>
           <div style={styles.logoWrap}><div style={styles.logoIcon}>🐾</div><div><div style={styles.logoText}>Benim Miov</div><div style={styles.headerSubtitle}>Minik dostlarının yaşam asistanı</div></div></div>
-          <div style={styles.developerCard}><div style={styles.developerBadge}>Geliştirici</div><div style={styles.developerName}>Çağatay Burucu</div><div style={styles.developerMeta}>Benim Miov • Product Builder</div></div>
+          <div style={styles.developerCard}><div style={styles.developerBadge}>Geliştirici</div><div style={styles.developerName}>Çağatay B</div><div style={styles.developerMeta}>Benim Miov • Product Builder</div></div>
         </div>
 
         <div style={styles.topNav}>
