@@ -3,12 +3,14 @@ import React, { useMemo, useState } from "react";
 import {
   Image,
   Pressable,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
   View,
+  useWindowDimensions,
 } from "react-native";
 
 type VaccineStatus = "Planlandı" | "Yaklaşıyor" | "Tamamlandı";
@@ -87,6 +89,9 @@ const initialCats: CatProfile[] = [
 ];
 
 export default function HomeScreen() {
+  const { width } = useWindowDimensions();
+  const isWebWide = width >= 900;
+
   const [cats] = useState<CatProfile[]>(initialCats);
   const [selectedCatId, setSelectedCatId] = useState<number>(initialCats[0].id);
   const [activeTab, setActiveTab] = useState<"genel" | "asilar" | "rutinler">(
@@ -116,255 +121,272 @@ export default function HomeScreen() {
   if (!selectedCat) {
     return (
       <LinearGradient
-        colors={["#020617", "#111827", "#312e81"]}
+        colors={["#020617", "#0f172a", "#312e81"]}
         style={styles.gradient}
       >
-        <StatusBar barStyle="light-content" />
-        <View style={styles.emptyWrap}>
-          <Text style={styles.emptyTitle}>Kedi profili bulunamadı</Text>
-          <Text style={styles.emptyText}>
-            Arama kutusunu temizleyip tekrar dene.
-          </Text>
-        </View>
+        <SafeAreaView style={styles.safe}>
+          <StatusBar barStyle="light-content" />
+          <View style={styles.emptyWrap}>
+            <Text style={styles.emptyTitle}>Kedi profili bulunamadı</Text>
+            <Text style={styles.emptyText}>
+              Arama kutusunu temizleyip tekrar dene.
+            </Text>
+          </View>
+        </SafeAreaView>
       </LinearGradient>
     );
   }
 
   return (
     <LinearGradient
-      colors={["#020617", "#111827", "#312e81"]}
+      colors={["#020617", "#0f172a", "#312e81"]}
       style={styles.gradient}
     >
-      <StatusBar barStyle="light-content" />
+      <SafeAreaView style={styles.safe}>
+        <StatusBar barStyle="light-content" />
 
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.header}>
-          <Text style={styles.logo}>Benim Miov 🐾</Text>
-          <Text style={styles.subtitle}>
-            Kedi sağlık ve bakım takip ekranı
-          </Text>
-        </View>
-
-        <View style={styles.searchCard}>
-          <Text style={styles.sectionLabel}>Kedi Ara</Text>
-          <TextInput
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholder="İsim veya ırk yaz..."
-            placeholderTextColor="#94a3b8"
-            style={styles.input}
-          />
-        </View>
-
-        <Text style={styles.sectionTitle}>Kedi Profilleri</Text>
-
-        {filteredCats.map((cat) => {
-          const isActive = cat.id === selectedCat.id;
-
-          return (
-            <Pressable
-              key={cat.id}
-              onPress={() => setSelectedCatId(cat.id)}
-              style={[styles.catCard, isActive && styles.catCardActive]}
-            >
-              <Image source={{ uri: cat.image }} style={styles.catImage} />
-              <View style={styles.catInfo}>
-                <View style={styles.catTopRow}>
-                  <View style={styles.catTextWrap}>
-                    <Text style={styles.catName}>{cat.name}</Text>
-                    <Text style={styles.catMeta}>
-                      {cat.age} • {cat.breed}
-                    </Text>
-                  </View>
-
-                  <View style={styles.activeBadge}>
-                    <Text style={styles.activeBadgeText}>
-                      {isActive ? "Seçili" : "Profil"}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.infoGrid}>
-                  <View style={styles.infoBox}>
-                    <Text style={styles.infoLabel}>Sonraki Aşı</Text>
-                    <Text style={styles.infoValueGreen}>{cat.nextVaccine}</Text>
-                  </View>
-
-                  <View style={styles.infoBox}>
-                    <Text style={styles.infoLabel}>Vitamin</Text>
-                    <Text style={styles.infoValueYellow}>
-                      {cat.vitaminStatus}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.noteBox}>
-                  <Text style={styles.infoLabel}>Günlük Not</Text>
-                  <Text style={styles.noteText}>{cat.healthNote}</Text>
-                </View>
-              </View>
-            </Pressable>
-          );
-        })}
-
-        <View style={styles.profileWrap}>
-          <Image source={{ uri: selectedCat.image }} style={styles.profileImage} />
-
-          <View style={styles.profileCard}>
-            <Text style={styles.profileName}>{selectedCat.name}</Text>
-            <Text style={styles.profileMeta}>
-              {selectedCat.breed} • {selectedCat.gender} • {selectedCat.weight}
-            </Text>
-
-            <View style={styles.statsRow}>
-              <View style={styles.statCard}>
-                <Text style={styles.statValue}>{totalVaccines}</Text>
-                <Text style={styles.statLabel}>Toplam Aşı</Text>
-              </View>
-
-              <View style={styles.statCard}>
-                <Text style={styles.statValue}>{completedVaccines}</Text>
-                <Text style={styles.statLabel}>Tamamlanan</Text>
-              </View>
-
-              <View style={styles.statCard}>
-                <Text style={styles.statValue}>1</Text>
-                <Text style={styles.statLabel}>Aktif Profil</Text>
-              </View>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={[styles.pageWrap, isWebWide && styles.pageWrapWide]}>
+            <View style={styles.header}>
+              <Text style={styles.logo}>Benim Miov 🐾</Text>
+              <Text style={styles.subtitle}>
+                Kedi sağlık ve bakım takip ekranı
+              </Text>
             </View>
 
-            <View style={styles.tabs}>
-              <Pressable
-                onPress={() => setActiveTab("genel")}
-                style={[
-                  styles.tabButton,
-                  activeTab === "genel" && styles.tabButtonActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.tabText,
-                    activeTab === "genel" && styles.tabTextActive,
-                  ]}
-                >
-                  Genel
-                </Text>
-              </Pressable>
-
-              <Pressable
-                onPress={() => setActiveTab("asilar")}
-                style={[
-                  styles.tabButton,
-                  activeTab === "asilar" && styles.tabButtonActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.tabText,
-                    activeTab === "asilar" && styles.tabTextActive,
-                  ]}
-                >
-                  Aşılar
-                </Text>
-              </Pressable>
-
-              <Pressable
-                onPress={() => setActiveTab("rutinler")}
-                style={[
-                  styles.tabButton,
-                  activeTab === "rutinler" && styles.tabButtonActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.tabText,
-                    activeTab === "rutinler" && styles.tabTextActive,
-                  ]}
-                >
-                  Rutinler
-                </Text>
-              </Pressable>
+            <View style={styles.searchCard}>
+              <Text style={styles.sectionLabel}>Kedi Ara</Text>
+              <TextInput
+                value={searchText}
+                onChangeText={setSearchText}
+                placeholder="İsim veya ırk yaz..."
+                placeholderTextColor="#94a3b8"
+                style={styles.input}
+              />
             </View>
 
-            {activeTab === "genel" && (
-              <View style={styles.panel}>
-                <View style={styles.panelItem}>
-                  <Text style={styles.panelItemLabel}>Yaş</Text>
-                  <Text style={styles.panelItemValue}>{selectedCat.age}</Text>
+            <Text style={styles.sectionTitle}>Kedi Profilleri</Text>
+
+            <View style={styles.cardList}>
+              {filteredCats.map((cat) => {
+                const isActive = cat.id === selectedCat.id;
+
+                return (
+                  <Pressable
+                    key={cat.id}
+                    onPress={() => setSelectedCatId(cat.id)}
+                    style={[
+                      styles.catCard,
+                      isActive && styles.catCardActive,
+                    ]}
+                  >
+                    <Image source={{ uri: cat.image }} style={styles.catImage} />
+
+                    <View style={styles.catInfo}>
+                      <View style={styles.catTopRow}>
+                        <View style={styles.catTextWrap}>
+                          <Text style={styles.catName}>{cat.name}</Text>
+                          <Text style={styles.catMeta}>
+                            {cat.age} • {cat.breed}
+                          </Text>
+                        </View>
+
+                        <View style={styles.activeBadge}>
+                          <Text style={styles.activeBadgeText}>
+                            {isActive ? "Seçili" : "Profil"}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={styles.infoGrid}>
+                        <View style={styles.infoBox}>
+                          <Text style={styles.infoLabel}>Sonraki Aşı</Text>
+                          <Text style={styles.infoValueGreen}>
+                            {cat.nextVaccine}
+                          </Text>
+                        </View>
+
+                        <View style={styles.infoBox}>
+                          <Text style={styles.infoLabel}>Vitamin</Text>
+                          <Text style={styles.infoValueYellow}>
+                            {cat.vitaminStatus}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={styles.noteBox}>
+                        <Text style={styles.infoLabel}>Günlük Not</Text>
+                        <Text style={styles.noteText}>{cat.healthNote}</Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            <Text style={styles.sectionTitle}>Seçili Profil</Text>
+
+            <View style={styles.profileCard}>
+              <Image
+                source={{ uri: selectedCat.image }}
+                style={styles.profileImage}
+              />
+
+              <Text style={styles.profileName}>{selectedCat.name}</Text>
+              <Text style={styles.profileMeta}>
+                {selectedCat.breed} • {selectedCat.gender} • {selectedCat.weight}
+              </Text>
+
+              <View style={styles.statsRow}>
+                <View style={styles.statCard}>
+                  <Text style={styles.statValue}>{totalVaccines}</Text>
+                  <Text style={styles.statLabel}>Toplam Aşı</Text>
                 </View>
 
-                <View style={styles.panelItem}>
-                  <Text style={styles.panelItemLabel}>Sonraki Aşı</Text>
-                  <Text style={styles.panelItemValue}>
-                    {selectedCat.nextVaccine}
-                  </Text>
+                <View style={styles.statCard}>
+                  <Text style={styles.statValue}>{completedVaccines}</Text>
+                  <Text style={styles.statLabel}>Tamamlanan</Text>
                 </View>
 
-                <View style={styles.panelItem}>
-                  <Text style={styles.panelItemLabel}>Vitamin Durumu</Text>
-                  <Text style={styles.panelItemValue}>
-                    {selectedCat.vitaminStatus}
-                  </Text>
-                </View>
-
-                <View style={styles.panelItem}>
-                  <Text style={styles.panelItemLabel}>Sağlık Notu</Text>
-                  <Text style={styles.panelItemValue}>
-                    {selectedCat.healthNote}
-                  </Text>
+                <View style={styles.statCard}>
+                  <Text style={styles.statValue}>1</Text>
+                  <Text style={styles.statLabel}>Aktif Profil</Text>
                 </View>
               </View>
-            )}
 
-            {activeTab === "asilar" && (
-              <View style={styles.panel}>
-                {selectedCat.vaccines.map((vaccine) => (
-                  <View key={vaccine.id} style={styles.listCard}>
-                    <View style={styles.listLeft}>
-                      <Text style={styles.listTitle}>{vaccine.name}</Text>
-                      <Text style={styles.listMeta}>
-                        Yapıldığı tarih: {vaccine.date}
-                      </Text>
-                      <Text style={styles.listMeta}>
-                        Sonraki tarih: {vaccine.nextDate}
-                      </Text>
-                    </View>
+              <View style={styles.tabs}>
+                <Pressable
+                  onPress={() => setActiveTab("genel")}
+                  style={[
+                    styles.tabButton,
+                    activeTab === "genel" && styles.tabButtonActive,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.tabText,
+                      activeTab === "genel" && styles.tabTextActive,
+                    ]}
+                  >
+                    Genel
+                  </Text>
+                </Pressable>
 
-                    <View
-                      style={[
-                        styles.statusBadge,
-                        vaccine.status === "Tamamlandı" && styles.statusDone,
-                        vaccine.status === "Yaklaşıyor" && styles.statusSoon,
-                        vaccine.status === "Planlandı" && styles.statusPlan,
-                      ]}
-                    >
-                      <Text style={styles.statusText}>{vaccine.status}</Text>
-                    </View>
+                <Pressable
+                  onPress={() => setActiveTab("asilar")}
+                  style={[
+                    styles.tabButton,
+                    activeTab === "asilar" && styles.tabButtonActive,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.tabText,
+                      activeTab === "asilar" && styles.tabTextActive,
+                    ]}
+                  >
+                    Aşılar
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  onPress={() => setActiveTab("rutinler")}
+                  style={[
+                    styles.tabButton,
+                    activeTab === "rutinler" && styles.tabButtonActive,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.tabText,
+                      activeTab === "rutinler" && styles.tabTextActive,
+                    ]}
+                  >
+                    Rutinler
+                  </Text>
+                </Pressable>
+              </View>
+
+              {activeTab === "genel" && (
+                <View style={styles.panel}>
+                  <View style={styles.panelItem}>
+                    <Text style={styles.panelItemLabel}>Yaş</Text>
+                    <Text style={styles.panelItemValue}>{selectedCat.age}</Text>
                   </View>
-                ))}
-              </View>
-            )}
 
-            {activeTab === "rutinler" && (
-              <View style={styles.panel}>
-                {selectedCat.routines.map((routine) => (
-                  <View key={routine.id} style={styles.listCard}>
-                    <View style={styles.listLeft}>
-                      <Text style={styles.listTitle}>{routine.title}</Text>
-                      <Text style={styles.listMeta}>Günlük takip kaydı</Text>
-                    </View>
-                    <Text style={styles.routineValue}>{routine.value}</Text>
+                  <View style={styles.panelItem}>
+                    <Text style={styles.panelItemLabel}>Sonraki Aşı</Text>
+                    <Text style={styles.panelItemValue}>
+                      {selectedCat.nextVaccine}
+                    </Text>
                   </View>
-                ))}
-              </View>
-            )}
+
+                  <View style={styles.panelItem}>
+                    <Text style={styles.panelItemLabel}>Vitamin Durumu</Text>
+                    <Text style={styles.panelItemValue}>
+                      {selectedCat.vitaminStatus}
+                    </Text>
+                  </View>
+
+                  <View style={styles.panelItem}>
+                    <Text style={styles.panelItemLabel}>Sağlık Notu</Text>
+                    <Text style={styles.panelItemValue}>
+                      {selectedCat.healthNote}
+                    </Text>
+                  </View>
+                </View>
+              )}
+
+              {activeTab === "asilar" && (
+                <View style={styles.panel}>
+                  {selectedCat.vaccines.map((vaccine) => (
+                    <View key={vaccine.id} style={styles.listCard}>
+                      <View style={styles.listLeft}>
+                        <Text style={styles.listTitle}>{vaccine.name}</Text>
+                        <Text style={styles.listMeta}>
+                          Yapıldığı tarih: {vaccine.date}
+                        </Text>
+                        <Text style={styles.listMeta}>
+                          Sonraki tarih: {vaccine.nextDate}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={[
+                          styles.statusBadge,
+                          vaccine.status === "Tamamlandı" && styles.statusDone,
+                          vaccine.status === "Yaklaşıyor" && styles.statusSoon,
+                          vaccine.status === "Planlandı" && styles.statusPlan,
+                        ]}
+                      >
+                        <Text style={styles.statusText}>{vaccine.status}</Text>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              )}
+
+              {activeTab === "rutinler" && (
+                <View style={styles.panel}>
+                  {selectedCat.routines.map((routine) => (
+                    <View key={routine.id} style={styles.listCard}>
+                      <View style={styles.listLeft}>
+                        <Text style={styles.listTitle}>{routine.title}</Text>
+                        <Text style={styles.listMeta}>Günlük takip kaydı</Text>
+                      </View>
+                      <Text style={styles.routineValue}>{routine.value}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </LinearGradient>
   );
 }
@@ -373,20 +395,31 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
   },
+  safe: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },
   content: {
-    padding: 16,
-    paddingTop: 50,
-    paddingBottom: 40,
+    paddingBottom: 110,
+  },
+  pageWrap: {
+    width: "100%",
+    paddingHorizontal: 16,
+    paddingTop: 20,
+  },
+  pageWrapWide: {
+    maxWidth: 980,
+    alignSelf: "center",
+    width: "100%",
   },
   header: {
     marginBottom: 20,
   },
   logo: {
     color: "#ffffff",
-    fontSize: 28,
+    fontSize: 34,
     fontWeight: "800",
   },
   subtitle: {
@@ -395,7 +428,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   searchCard: {
-    backgroundColor: "rgba(17, 28, 45, 0.9)",
+    backgroundColor: "rgba(17, 28, 45, 0.88)",
     borderRadius: 20,
     padding: 16,
     marginBottom: 20,
@@ -418,15 +451,19 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: "#ffffff",
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "800",
     marginBottom: 14,
+    marginTop: 4,
+  },
+  cardList: {
+    marginBottom: 8,
   },
   catCard: {
     backgroundColor: "rgba(17, 28, 45, 0.9)",
-    borderRadius: 22,
+    borderRadius: 24,
     overflow: "hidden",
-    marginBottom: 16,
+    marginBottom: 18,
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.06)",
   },
@@ -453,7 +490,7 @@ const styles = StyleSheet.create({
   },
   catName: {
     color: "#ffffff",
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "800",
   },
   catMeta: {
@@ -508,22 +545,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  profileWrap: {
-    marginTop: 8,
-  },
-  profileImage: {
-    width: "100%",
-    height: 260,
-    borderRadius: 24,
-    marginBottom: 14,
-    resizeMode: "cover",
-  },
   profileCard: {
     backgroundColor: "rgba(17, 28, 45, 0.92)",
     borderRadius: 24,
     padding: 16,
+    marginBottom: 30,
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.08)",
+  },
+  profileImage: {
+    width: "100%",
+    height: 240,
+    borderRadius: 18,
+    marginBottom: 16,
+    resizeMode: "cover",
   },
   profileName: {
     color: "#ffffff",
