@@ -1,8 +1,8 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useMemo, useState } from "react";
 import {
   Image,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -115,7 +115,10 @@ export default function HomeScreen() {
 
   if (!selectedCat) {
     return (
-      <SafeAreaView style={styles.safe}>
+      <LinearGradient
+        colors={["#020617", "#111827", "#312e81"]}
+        style={styles.gradient}
+      >
         <StatusBar barStyle="light-content" />
         <View style={styles.emptyWrap}>
           <Text style={styles.emptyTitle}>Kedi profili bulunamadı</Text>
@@ -123,25 +126,27 @@ export default function HomeScreen() {
             Arama kutusunu temizleyip tekrar dene.
           </Text>
         </View>
-      </SafeAreaView>
+      </LinearGradient>
     );
   }
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <LinearGradient
+      colors={["#020617", "#111827", "#312e81"]}
+      style={styles.gradient}
+    >
       <StatusBar barStyle="light-content" />
+
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <View>
-            <Text style={styles.logo}>Benim Miov 🐾</Text>
-            <Text style={styles.subtitle}>
-              Kedi sağlık ve bakım takip ekranı
-            </Text>
-          </View>
+          <Text style={styles.logo}>Benim Miov 🐾</Text>
+          <Text style={styles.subtitle}>
+            Kedi sağlık ve bakım takip ekranı
+          </Text>
         </View>
 
         <View style={styles.searchCard}>
@@ -169,12 +174,13 @@ export default function HomeScreen() {
               <Image source={{ uri: cat.image }} style={styles.catImage} />
               <View style={styles.catInfo}>
                 <View style={styles.catTopRow}>
-                  <View>
+                  <View style={styles.catTextWrap}>
                     <Text style={styles.catName}>{cat.name}</Text>
                     <Text style={styles.catMeta}>
                       {cat.age} • {cat.breed}
                     </Text>
                   </View>
+
                   <View style={styles.activeBadge}>
                     <Text style={styles.activeBadgeText}>
                       {isActive ? "Seçili" : "Profil"}
@@ -359,21 +365,20 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: {
+  gradient: {
     flex: 1,
-    backgroundColor: "#0b1120",
   },
   container: {
     flex: 1,
-    backgroundColor: "#0b1120",
   },
   content: {
     padding: 16,
+    paddingTop: 50,
     paddingBottom: 40,
   },
   header: {
@@ -385,15 +390,17 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   subtitle: {
-    color: "#94a3b8",
+    color: "#cbd5e1",
     fontSize: 14,
     marginTop: 6,
   },
   searchCard: {
-    backgroundColor: "#111c2d",
+    backgroundColor: "rgba(17, 28, 45, 0.9)",
     borderRadius: 20,
     padding: 16,
     marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
   },
   sectionLabel: {
     color: "#cbd5e1",
@@ -416,7 +423,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   catCard: {
-    backgroundColor: "#111c2d",
+    backgroundColor: "rgba(17, 28, 45, 0.9)",
     borderRadius: 22,
     overflow: "hidden",
     marginBottom: 16,
@@ -429,6 +436,7 @@ const styles = StyleSheet.create({
   catImage: {
     width: "100%",
     height: 220,
+    resizeMode: "cover",
   },
   catInfo: {
     padding: 16,
@@ -438,6 +446,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     marginBottom: 14,
+    gap: 10,
+  },
+  catTextWrap: {
+    flex: 1,
   },
   catName: {
     color: "#ffffff",
@@ -504,11 +516,14 @@ const styles = StyleSheet.create({
     height: 260,
     borderRadius: 24,
     marginBottom: 14,
+    resizeMode: "cover",
   },
   profileCard: {
-    backgroundColor: "#111c2d",
+    backgroundColor: "rgba(17, 28, 45, 0.92)",
     borderRadius: 24,
     padding: 16,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
   },
   profileName: {
     color: "#ffffff",
@@ -593,10 +608,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    gap: 10,
   },
   listLeft: {
     flex: 1,
-    paddingRight: 12,
   },
   listTitle: {
     color: "#ffffff",
